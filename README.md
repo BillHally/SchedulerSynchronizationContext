@@ -6,53 +6,59 @@ For example, if you have some work which you want performed on a background sche
 ```f#
 open SchedulerSynchronizationContext
 
-let asyncWork uiScheduler backgroundScheduler x : Async<unit> =
+let asyncWork uiScheduler backgroundScheduler =
     async {
         do! Async.SwitchToScheduler backgroundScheduler
-        let backgroundResult = backgroundWork x
+        let backgroundResult = backgroundWork ()
 
         do! Async.SwitchToScheduler uiScheduler
-        uiWork backgroundResult
+        return uiWork backgroundResult
     }
+
 ```
 
-This can then be used as follows (though obviously production code would not use ```TestScheduler```, and would perform real work): 
+This can then be used as follows (I've used ```EventLoopScheduler```s which name their threads to make it clarify which thread work is performed on):
 
 ```f#
-
 #r @"..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll"
 #r @"..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll"
 #r @"..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll"
+#r @"..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll"
 #r @"bin\Debug\SchedulerSynchronizationContext.dll"
-#r @"..\packages\Rx-Testing.2.2.5\lib\net45\Microsoft.Reactive.Testing.dll"
+
+open System.Threading
+open System.Reactive.Concurrency
 
 open SchedulerSynchronizationContext
-open Microsoft.Reactive.Testing
 
-let backgroundWork x =
-    printfn "backgroundWork passed %d" x
-    x * 5
+let backgroundWork () =
+    sprintf "backgroundWork ran on %s" Thread.CurrentThread.Name
 
 let uiWork x =
-    printfn "uiWork passed %d" x
+    sprintf "%s\nuiWork ran on %s" x Thread.CurrentThread.Name
 
-let uiScheduler = TestScheduler()
-let backgroundScheduler = TestScheduler()
+let asyncWork uiScheduler backgroundScheduler =
+    async {
+        do! Async.SwitchToScheduler backgroundScheduler
+        let backgroundResult = backgroundWork ()
 
-asyncWork uiScheduler backgroundScheduler 7 |> Async.StartImmediate
+        do! Async.SwitchToScheduler uiScheduler
+        return uiWork backgroundResult
+    }
 
-printfn "Advancing background scheduler..."
-backgroundScheduler.AdvanceBy 1L
-printfn "Advancing UI scheduler..."
-uiScheduler.AdvanceBy 1L
+let uiScheduler         = new EventLoopScheduler(fun x -> new Thread(x, Name = "UI scheduler"))
+let backgroundScheduler = new EventLoopScheduler(fun x -> new Thread(x, Name = "Background scheduler"))
+
+let t = asyncWork uiScheduler backgroundScheduler |> Async.StartAsTask
+printfn "Result:\n\n%s" t.Result
 
 (*
 Prints:
 
-Advancing background scheduler...
-backgroundWork passed 7
-Advancing UI scheduler...
-uiWork passed 35
+Result:
+
+backgroundWork ran on Background scheduler
+uiWork ran on UI scheduler
 
 *)
 ```

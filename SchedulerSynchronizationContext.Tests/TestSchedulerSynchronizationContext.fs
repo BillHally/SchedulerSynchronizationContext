@@ -28,29 +28,3 @@ let ``Async.SwitchToScheduler when invoked runs the continuation using the sched
     // Assert
     before |> should equal 1
     after  |> should equal 2
-
-[<Test>]
-let ``meh``() =
-    let backgroundWork () = 5
-
-    let state = ref false
-    let uiWork x = state := true
-
-    let asyncWork uiScheduler backgroundScheduler : Async<unit> =
-        async {
-            do! Async.SwitchToScheduler backgroundScheduler
-            let backgroundResult = backgroundWork()
-
-            do! Async.SwitchToScheduler uiScheduler
-            uiWork backgroundResult
-        }
-
-    let uiScheduler = TestScheduler()
-    let backgroundScheduler = TestScheduler()
-
-    asyncWork uiScheduler backgroundScheduler |> Async.StartImmediate
-
-    backgroundScheduler.AdvanceBy 1L
-    printfn "%A" state.Value
-    uiScheduler.AdvanceBy 1L
-    printfn "%A" state.Value
