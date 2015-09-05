@@ -51,14 +51,13 @@ let backgroundScheduler = new EventLoopScheduler(fun x -> new Thread(x, Name = "
 
 let t = asyncWork uiScheduler backgroundScheduler |> Async.StartAsTask
 printfn "Result:\n\n%s" t.Result
+```
 
-(*
-Prints:
+This will output:
 
+```
 Result:
 
 backgroundWork ran on Background scheduler
 uiWork ran on UI scheduler
-
-*)
 ```
