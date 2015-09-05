@@ -1,7 +1,22 @@
 # SchedulerSynchronizationContext
 A synchronization context which schedules work to a given scheduler, and an implementation of Async.SwitchToScheduler which uses it.
 
-For example, if you have some work which you want performed on a background scheduler to avoid blocking the UI thread, and the value propagated on the UI thread, this can be done as follows:
+For example, if you have some work which you want performed on a background scheduler to avoid blocking the UI thread, and the value propagated to the UI thread, this can be done as follows:
+
+```f#
+open SchedulerSynchronizationContext
+
+let asyncWork uiScheduler backgroundScheduler x : Async<unit> =
+    async {
+        do! Async.SwitchToScheduler backgroundScheduler
+        let backgroundResult = backgroundWork x
+
+        do! Async.SwitchToScheduler uiScheduler
+        uiWork backgroundResult
+    }
+```
+
+A longer example using ```TestScheduler```s: 
 
 ```f#
 
@@ -20,15 +35,6 @@ let backgroundWork x =
 
 let uiWork x =
     printfn "uiWork passed %d" x
-
-let asyncWork uiScheduler backgroundScheduler x : Async<unit> =
-    async {
-        do! Async.SwitchToScheduler backgroundScheduler
-        let backgroundResult = backgroundWork x
-
-        do! Async.SwitchToScheduler uiScheduler
-        uiWork backgroundResult
-    }
 
 let uiScheduler = TestScheduler()
 let backgroundScheduler = TestScheduler()
