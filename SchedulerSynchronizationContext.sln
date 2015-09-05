@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SchedulerSynchronizationContext", "SchedulerSynchronizationContext\SchedulerSynchronizationContext.fsproj", "{52D7B551-6794-43F0-85E6-16D0C80ABB59}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SchedulerSynchronizationContext.Tests", "SchedulerSynchronizationContext.Tests\SchedulerSynchronizationContext.Tests.fsproj", "{8EA8481E-06DB-4516-8B04-B6C864B0B4EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52D7B551-6794-43F0-85E6-16D0C80ABB59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52D7B551-6794-43F0-85E6-16D0C80ABB59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52D7B551-6794-43F0-85E6-16D0C80ABB59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52D7B551-6794-43F0-85E6-16D0C80ABB59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EA8481E-06DB-4516-8B04-B6C864B0B4EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EA8481E-06DB-4516-8B04-B6C864B0B4EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EA8481E-06DB-4516-8B04-B6C864B0B4EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EA8481E-06DB-4516-8B04-B6C864B0B4EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
