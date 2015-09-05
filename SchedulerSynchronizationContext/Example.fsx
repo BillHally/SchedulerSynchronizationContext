@@ -1,11 +1,4 @@
-# SchedulerSynchronizationContext
-A synchronization context which schedules work to a given scheduler, and an implementation of Async.SwitchToScheduler which uses it.
-
-For example, if you have some work which you want performed on a background scheduler to avoid blocking the UI thread, and the value propagated on the UI thread, this can be done as follows:
-
-```f#
-
-#r @"..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll"
+﻿#r @"..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll"
 #r @"..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll"
 #r @"..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll"
 #r @"bin\Debug\SchedulerSynchronizationContext.dll"
@@ -49,4 +42,3 @@ Advancing UI scheduler...
 uiWork passed 35
 
 *)
-```
