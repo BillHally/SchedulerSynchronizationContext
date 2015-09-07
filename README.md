@@ -17,7 +17,7 @@ let asyncWork uiScheduler backgroundScheduler =
 
 ```
 
-This can then be used as follows (I've used ```EventLoopScheduler```s which name their threads to make it clarify which thread work is performed on):
+This can then be used as follows (I've used ```EventLoopScheduler```s which name their threads to clarify which thread work is performed on):
 
 ```f#
 #r @"..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll"
